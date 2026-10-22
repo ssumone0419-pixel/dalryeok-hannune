@@ -2,3 +2,10 @@
 /* Match the main calendar page spacing and ad-slot treatment. */
 .holidays-page{gap:0}.holidays-page .intro{margin-bottom:24px}.holidays-page .holiday-ad{margin:0 0 20px;min-height:105px}.holidays-page>.panel{margin-bottom:20px}.holidays-page>.notice{margin:0 0 20px}.holidays-page .panel{border-radius:var(--site-card-radius);border-color:var(--site-border)}
 @media(max-width:600px){.holidays-page .holiday-ad{margin-bottom:16px}}
+
+/* Clearly visible leave-mode switch, including narrow mobile screens. */
+.leave-mode{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin:0 0 18px;padding:5px;border-radius:14px;background:#eef2fa;border:1px solid #e0e6f2}
+.leave-mode-btn{appearance:none;border:1px solid transparent;background:transparent;border-radius:10px;padding:13px 12px;min-height:48px;font:inherit;font-size:15px;font-weight:750;color:#56647c;cursor:pointer;transition:background .15s,border-color .15s}
+.leave-mode-btn.active{background:#fff;color:#253da6;border-color:#b7c5ef;box-shadow:0 2px 9px #253da616}
+.leave-mode-btn:focus-visible{outline:3px solid #7289ed;outline-offset:2px}
+@media(max-width:420px){.leave-mode-btn{font-size:13px;padding:12px 5px}}

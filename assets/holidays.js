@@ -12,6 +12,8 @@ const dayLabel=d=>['일','월','화','수','목','금','토'][d.getUTCDay()];
 const dayMs=86400000;
 const dayAdd=(d,n)=>new Date(d.getTime()+n*dayMs);
 const holidayMap=new Map();
+let leaveMode=false;
+let loadedYear=null;
 const isWeekend=d=>[0,6].includes(d.getUTCDay());
 const isRest=d=>isWeekend(d)||holidayMap.has(fmt(d));
 function streaks(start,end,leave){
@@ -46,9 +48,9 @@ function render(year){
    candidates.push({...segment,leave})
   }
  }
- // Merge overlapping holiday recommendations into one representative card.
- // Prefer the longest break; on ties prefer a break without taking leave.
- const all=[...base.map(s=>({...s,type:'기본 연휴'})),...candidates.map(s=>({...s,type:'연차 1일 활용'}))];
+ // Each mode is calculated independently. Do not let leave suggestions hide ordinary breaks.
+ // Merge overlapping recommendations within the selected mode only.
+ const all=(leaveMode?candidates.map(s=>({...s,type:'연차 1일 활용'})):base.map(s=>({...s,type:'기본 연휴'})));
  all.sort((a,b)=>a.start-b.start||a.end-b.end);
  const groups=[];
  for(const item of all){
@@ -58,12 +60,9 @@ function render(year){
    if(item.end>last.end)last.end=item.end;
   }else groups.push({end:item.end,items:[item]});
  }
- const chosen=groups.map(g=>{
-  const ranked=g.items.slice().sort((a,b)=>b.days-a.days||Number(!!a.leave)-Number(!!b.leave)||a.start-b.start);
-  return ranked[0];
- }).sort((a,b)=>a.start-b.start);
+ const chosen=groups.map(g=>g.items.slice().sort((a,b)=>b.days-a.days||a.start-b.start)[0]).sort((a,b)=>a.start-b.start);
  const golden=$('golden');golden.replaceChildren();
- if(!chosen.length)golden.append(text('p','표시할 3일 이상 연휴가 없습니다.','empty'));
+ if(!chosen.length)golden.append(text('p',leaveMode?'연차 1일로 4일 이상 쉬는 추천 구간이 없습니다.':'연차 없이 3일 이상 이어지는 연휴가 없습니다.','empty'));
  for(const s of chosen){
   const card=text('article','','gold-card');
   card.append(text('div',s.type,'type'),text('h3',`${s.days}일 연휴`),text('div',`${label(s.start)} (${dayLabel(s.start)}) ~ ${label(s.end)} (${dayLabel(s.end)})`,'range'));
@@ -91,6 +90,7 @@ async function load(){
   }
   if(!holidayMap.size){$('notice').textContent='공식 API에 공휴일 데이터가 없습니다. 이 연도의 공휴일이 없다는 뜻은 아닙니다.';$('summary').textContent='데이터 없음';return}
   $('notice').textContent='한국천문연구원 특일 정보 API 기준 · 임시공휴일 등은 공식 데이터 반영 후 표시됩니다.';
+  loadedYear=year;
   render(year);
  }catch(e){
   if(id!==requestId)return;
@@ -98,5 +98,14 @@ async function load(){
   $('summary').textContent='조회 실패';
  }
 }
-sel.addEventListener('change',load);load();
+function setLeaveMode(next){
+ leaveMode=next;
+ for(const [id,selected] of [['withoutLeave',!next],['withLeave',next]]){
+  const btn=$(id);btn.classList.toggle('active',selected);btn.setAttribute('aria-pressed',String(selected));
+ }
+ if(loadedYear===Number(sel.value))render(loadedYear);
+}
+$('withoutLeave').addEventListener('click',()=>setLeaveMode(false));
+$('withLeave').addEventListener('click',()=>setLeaveMode(true));
+sel.addEventListener('change',()=>{loadedYear=null;load()});load();
 })();

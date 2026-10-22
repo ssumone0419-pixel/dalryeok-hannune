@@ -1,0 +1,29 @@
+.age-page{max-width:1080px;margin:0 auto;padding:34px 22px 70px}.age-page .intro{margin-bottom:24px}.age-page .intro h1{font-size:clamp(1.65rem,3.2vw,2.2rem);margin:0 0 12px}.age-page .intro p{color:#64748b;margin:0}.age-page .panel{padding:25px;margin:22px 0;border-radius:18px}.age-page h2{font-size:1.25rem;margin:0 0 18px}.age-fields{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}.age-fields label{display:grid;gap:8px;font-weight:700;font-size:.94rem}.age-fields select{width:100%;padding:13px 12px;border:1px solid #cbd5e1;border-radius:10px;background:white;font:inherit;min-height:48px}.age-button{margin-top:18px;border:0;border-radius:11px;background:#2563eb;color:white;padding:14px 24px;font-weight:700;font-size:1rem;cursor:pointer;min-height:48px}.age-button:hover{background:#1d4ed8}.age-error{color:#b91c1c}.age-results{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-bottom:28px}.age-results>div{background:#f1f5f9;border-radius:12px;padding:18px;display:grid;gap:10px}.age-results span{color:#475569;font-size:.9rem}.age-results strong{font-size:1.9rem;color:#0f172a}.muted{color:#64748b;font-size:.87rem;line-height:1.7}.school-table-wrap{overflow-x:auto}.school-table{width:100%;border-collapse:collapse;text-align:left}.school-table th,.school-table td{padding:13px;border-bottom:1px solid #e2e8f0}.age-heading{display:flex;gap:10px;align-items:baseline;flex-wrap:wrap}.grade-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}.grade-card{border:1px solid #e2e8f0;border-radius:12px;padding:16px}.grade-card h3{margin:0 0 12px;font-size:1.1rem}.grade-row{display:flex;justify-content:space-between;gap:8px;padding:9px 0;border-bottom:1px solid #f1f5f9}.grade-row:last-child{border:0}@media(max-width:700px){.age-page{padding:22px 14px 50px}.age-page .panel{padding:18px;margin:16px 0}.grade-grid{grid-template-columns:1fr}.age-results{gap:8px}.age-results>div{padding:12px 8px}.age-results span{font-size:.75rem}.age-results strong{font-size:1.35rem}.age-fields{gap:8px}.age-fields select{padding:10px 4px;font-size:.95rem}.age-button{width:100%}}
+/* v12: shared visual system with converter, calendar and holiday pages */
+.age-page{width:100%;max-width:1080px;margin:0 auto;padding:38px 24px 70px}
+.age-page .intro{margin:0 0 24px}
+.age-page .intro h1{font-family:inherit;font-size:30px;line-height:1.3;letter-spacing:-1px;font-weight:850;margin:0 0 10px}
+.age-page .intro p{font-family:inherit;font-size:15px;line-height:1.7;color:#67738b;margin:0}
+.age-page .panel{background:#fff;border:1px solid #e5e9f1;border-radius:20px;box-shadow:0 8px 25px #1a31500a;padding:24px;margin:0 0 20px}
+.age-page .demo-ad{margin:0 0 20px;min-height:105px}
+.age-page .age-button{background:#5965db;color:#fff;border:1px solid #5965db;border-radius:9px;font-family:inherit}
+.age-page .age-button:hover{background:#4856c7}
+.age-page .age-fields select{border-color:#dbe1ec;color:#17213a;border-radius:9px}
+.age-page .age-results>div{background:#f2f4fb}
+.age-page .age-results strong{color:#17213a}
+@media(max-width:600px){
+ main.age-page{padding:24px 12px 48px}
+ .age-page .intro{margin-bottom:18px}
+ .age-page .intro h1{font-size:clamp(23px,6vw,27px)}
+ .age-page .intro p{font-size:13px}
+ .age-page .panel{padding:16px;border-radius:15px;margin-bottom:14px}
+ .age-page .demo-ad{margin:16px 0;min-height:76px;padding:12px}
+ .age-page .age-fields{grid-template-columns:minmax(0,1.35fr) repeat(2,minmax(0,1fr));gap:7px}
+ .age-page .age-fields select{font-size:16px;padding:12px 5px;min-height:48px;min-width:0}
+ .age-page .age-results{grid-template-columns:repeat(3,minmax(0,1fr));gap:7px}
+ .age-page .age-results>div{min-width:0;padding:13px 7px}
+ .age-page .age-results strong{font-size:clamp(18px,5.3vw,25px)}
+ .age-page .grade-grid{grid-template-columns:minmax(0,1fr)}
+ .age-page .school-table th,.age-page .school-table td{padding:11px 6px;font-size:13px}
+}
+@media(max-width:360px){main.age-page{padding-left:9px;padding-right:9px}.age-page .panel{padding:11px}.age-page .age-results span{font-size:11px}}

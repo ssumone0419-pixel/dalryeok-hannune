@@ -12,7 +12,7 @@ button,select{touch-action:manipulation}
 @media(max-width:600px){
  header .nav{padding:12px 14px;min-height:0;gap:12px}
  header .brand{font-size:19px}
- header .site-menu{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px;width:100%;align-items:stretch}
+ header .site-menu{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px;width:100%;align-items:stretch}
  header .site-menu a{min-width:0;padding:10px 4px;min-height:44px;font-size:clamp(10px,2.75vw,12px);line-height:1.35;text-align:center;white-space:normal}
  main,main.holidays-page{padding:24px 12px 48px}
  main .hero,main .intro,main.holidays-page .intro{margin-bottom:18px}
@@ -47,8 +47,8 @@ button,select{touch-action:manipulation}
  .day,.empty{min-width:0;min-height:76px;border-radius:6px}
  .day{padding:5px 3px;gap:3px;overflow:hidden}
  .day.selected{padding:4px 2px}
- .day .main-date{font-size:13px}
- .day .sub-date{font-size:9px;line-height:1.15;overflow-wrap:anywhere}
+ .day .main-date{font-size:clamp(15px,4.5vw,19px);line-height:1.2;font-weight:850}
+ .day .sub-date{font-size:clamp(9px,2.5vw,11px);line-height:1.15;overflow-wrap:anywhere}
  .day .event-tag{font-size:9px;padding:2px;line-height:1.2}
  .holiday-tag{font-size:9px;line-height:1.15;overflow-wrap:anywhere}
  .all-events-list{grid-template-columns:minmax(0,1fr)}
@@ -70,8 +70,27 @@ button,select{touch-action:manipulation}
  main,main.holidays-page{padding-left:9px;padding-right:9px}
  main .panel,main.holidays-page .panel{padding:11px}
  .day,.empty{min-height:72px}
- .day .main-date{font-size:12px}
- .day .sub-date,.holiday-tag{font-size:8px}
+ .day .main-date{font-size:15px}
+ .day .sub-date,.holiday-tag{font-size:9px}
  .date-jump select{max-width:100px;padding:8px 3px}
 }
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;transition:none!important}}
+
+/* v12: compact, legible seven-column calendar on narrow screens */
+@media(max-width:600px){
+ .weekdays,.days{gap:3px}
+ .day,.empty{min-height:83px}
+ .day{padding:7px 3px;gap:3px}
+ .day.selected{padding:6px 2px}
+ .day .main-date{font-size:clamp(15px,4.5vw,19px)!important;font-weight:850;line-height:1.2}
+ .day .sub-date{font-size:10px;line-height:1.2}
+ .day .event-tag,.holiday-tag{font-size:9px;line-height:1.2}
+ header .site-menu a{font-size:12px;min-height:44px}
+}
+@media(max-width:360px){
+ .weekdays,.days{gap:2px}
+ .day,.empty{min-height:79px}
+ .day{padding:6px 2px}
+ .day .main-date{font-size:15px!important}
+ header .site-menu a{font-size:11px}
+}
