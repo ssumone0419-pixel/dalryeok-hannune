@@ -1,0 +1,1 @@
+데모 사이트입니다. index.html 실행. 하단에 사이트 소개, 이용 안내, 개인정보처리방침, 문의 링크가 있습니다. calendar.html에 광고 예정 영역 2개를 추가했습니다. 실제 광고 스크립트는 없습니다. 공개 전 privacy.html/contact.html의 운영자 이메일·시행일을 실제 정보로 교체하고 sitemap.example.xml의 example.com을 도메인으로 바꿔 sitemap.xml로 저장하세요. robots.txt에도 sitemap 절대주소를 추가하세요.
