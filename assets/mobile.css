@@ -1,0 +1,77 @@
+/* v9 mobile responsiveness: loaded after shared-layout.css on every page */
+html{overflow-x:clip;-webkit-text-size-adjust:100%}
+body{min-width:0;overflow-wrap:break-word}
+img,svg,canvas{max-width:100%}
+button,select,input{max-width:100%}
+button,select{touch-action:manipulation}
+:focus-visible{outline:3px solid #5965db;outline-offset:2px}
+@media(max-width:800px){
+ main .layout{grid-template-columns:minmax(0,1fr)}
+ .footer-inner{align-items:flex-start}
+}
+@media(max-width:600px){
+ header .nav{padding:12px 14px;min-height:0;gap:12px}
+ header .brand{font-size:19px}
+ header .site-menu{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px;width:100%;align-items:stretch}
+ header .site-menu a{min-width:0;padding:10px 4px;min-height:44px;font-size:clamp(10px,2.75vw,12px);line-height:1.35;text-align:center;white-space:normal}
+ main,main.holidays-page{padding:24px 12px 48px}
+ main .hero,main .intro,main.holidays-page .intro{margin-bottom:18px}
+ main .hero h1,main .intro h1,main.holidays-page .intro h1{font-size:clamp(23px,6vw,27px);letter-spacing:-.7px}
+ main .hero p,main .intro p,main.holidays-page .intro p{font-size:13px}
+ main .panel,main.holidays-page .panel,main .aside,main .side{padding:16px;border-radius:15px}
+ main .layout{gap:14px}
+ .demo-ad,main.holidays-page .holiday-ad{margin:16px 0;min-height:76px;padding:12px}
+ .footer-inner{padding:20px 14px;gap:12px;line-height:1.7}
+ .footer-inner nav{display:flex;flex-wrap:wrap;gap:9px 14px}
+ /* Converter */
+ .fields{grid-template-columns:minmax(0,1.35fr) minmax(0,1fr) minmax(0,1fr);gap:7px}
+ .field{min-width:0}
+ .field select,.field input{min-width:0;width:100%;font-size:16px;padding:12px 5px}
+ .field label{margin-bottom:6px}
+ .tabs button{min-width:0;font-size:13px;padding:12px 5px;min-height:44px}
+ .section-label{margin:22px 0 12px;font-size:14px}
+ .primary{min-height:46px}
+ .result{padding:18px 14px;margin-top:18px}
+ .result .date{font-size:clamp(19px,5.5vw,26px);overflow-wrap:anywhere}
+ .info{padding:19px 16px;margin-top:16px}
+ /* Calendar: preserve seven columns while making text readable */
+ .toolbar{display:flex;flex-direction:column;align-items:stretch;gap:12px}
+ .months{width:100%;justify-content:space-between;gap:4px}
+ .date-jump{min-width:0;justify-content:center;gap:5px}
+ .date-jump select{font-size:14px;padding:9px 5px;min-width:0;max-width:112px}
+ .months>button{min-width:40px;min-height:44px;padding:8px 10px;flex-shrink:0}
+ .controls{justify-content:space-between;width:100%}
+ .controls button,.controls select{min-height:44px}
+ .weekdays,.days{gap:2px}
+ .weekday{font-size:11px;padding:8px 0}
+ .day,.empty{min-width:0;min-height:76px;border-radius:6px}
+ .day{padding:5px 3px;gap:3px;overflow:hidden}
+ .day.selected{padding:4px 2px}
+ .day .main-date{font-size:13px}
+ .day .sub-date{font-size:9px;line-height:1.15;overflow-wrap:anywhere}
+ .day .event-tag{font-size:9px;padding:2px;line-height:1.2}
+ .holiday-tag{font-size:9px;line-height:1.15;overflow-wrap:anywhere}
+ .all-events-list{grid-template-columns:minmax(0,1fr)}
+ .all-event{min-width:0;padding:10px;flex-wrap:wrap}
+ .all-event-actions{flex-wrap:wrap}
+ /* Holiday overview */
+ .holiday-head{gap:10px;align-items:flex-start}
+ .holiday-summary{font-size:13px}
+ .gold-grid,.month-grid{grid-template-columns:minmax(0,1fr)}
+ .gold-card,.month-card{min-width:0;padding:14px}
+ .gold-card h3{font-size:17px}
+ .gold-card .range{font-size:13px;overflow-wrap:anywhere}
+ .section-heading h2{font-size:19px}
+ .info-page{margin:22px auto 45px;padding:0 12px}
+ .info-page article{padding:18px 15px}
+}
+@media(max-width:360px){
+ header .site-menu a{font-size:10px;padding:9px 2px}
+ main,main.holidays-page{padding-left:9px;padding-right:9px}
+ main .panel,main.holidays-page .panel{padding:11px}
+ .day,.empty{min-height:72px}
+ .day .main-date{font-size:12px}
+ .day .sub-date,.holiday-tag{font-size:8px}
+ .date-jump select{max-width:100px;padding:8px 3px}
+}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;transition:none!important}}

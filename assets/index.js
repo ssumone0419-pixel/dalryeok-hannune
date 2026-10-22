@@ -12,7 +12,7 @@ function dateOf(i){return new Date(BASE+i*DAY).toISOString().slice(0,10)}
 for(let i=0;i<COUNT;i++){const l=decode(i),key=lunarKey(l.year,l.month,l.day,l.leap),mk=monthKey(l.year,l.month,l.leap);if(byLunar.has(key))throw Error('음력 데이터에 중복이 있습니다.');byLunar.set(key,i);monthDays.set(mk,Math.max(monthDays.get(mk)||0,l.day));if(l.leap)leapMonths.add(`${l.year}-${l.month}`)}
 let mode='solar',last='';
 const solarStr=(y,m,d)=>`${y}년 ${m}월 ${d}일`;
-function fill(el,start,end,selected){el.innerHTML='';for(let i=start;i<=end;i++){const opt=document.createElement('option');opt.value=i;opt.textContent=i;el.appendChild(opt)}el.value=String(Math.min(end,Math.max(start,selected)))}
+function fill(el,start,end,selected){el.innerHTML='';for(let i=start;i<=end;i++){const opt=document.createElement('option');opt.value=i;opt.textContent=`${i}${el.id==='year'?'년':el.id==='month'?'월':'일'}`;el.appendChild(opt)}el.value=String(Math.min(end,Math.max(start,selected)))}
 function solarIndex(y,m,d){const t=Date.UTC(y,m-1,d),check=new Date(t);if(check.getUTCFullYear()!==y||check.getUTCMonth()+1!==m||check.getUTCDate()!==d)return -1;const i=(t-BASE)/DAY;return Number.isInteger(i)&&i>=0&&i<COUNT?i:-1}
 function selectedLunarMonth(){const value=$('month').value;return {month:parseInt(value,10),leap:value.endsWith('L')}}
 function fillMonths(year,selectedMonth,selectedLeap=false){
@@ -51,7 +51,7 @@ function switchMode(next){
   y=l.year;m=l.month;d=l.day;isLeap=l.leap;
  }
  fill($('year'),mode==='solar'?1900:1899,2050,y);
- if(mode==='lunar')fillMonths(y,m,isLeap);else{fill($('month'),1,12,m);$('monthHelp').hidden=true;}
+ if(mode==='lunar')fillMonths(y,m,isLeap);else{fill($('month'),1,12,m);for(const option of $('month').options)option.textContent=option.value+'월';$('monthHelp').hidden=true;}
  refreshDays();$('day').value=String(d);convert();
 }
 function convert(){

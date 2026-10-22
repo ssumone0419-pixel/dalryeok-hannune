@@ -4,23 +4,25 @@ const $=id=>document.getElementById(id), DAY=86400000, BASE=Date.UTC(1900,0,1), 
 const raw=atob(window.DalryeokData.packed);if(raw.length!==COUNT*3)throw Error('날짜 데이터 오류');
 const lunarByDay=[],lunarToIndex=new Map(),lunarMonths=new Map();
 const pad=n=>String(n).padStart(2,'0');
-const holidayYears=new Map(),holidayPending=new Map();let holidayEnabled=true;
+const holidayYears=new Map(),holidayPending=new Map(),holidayFailed=new Set();
 async function loadHolidayYear(year){
- if(holidayYears.has(year))return;
+ if(holidayYears.has(year)||holidayFailed.has(year))return;
  if(holidayPending.has(year))return holidayPending.get(year);
- const task=(async()=>{const res=await fetch(`/api/holidays?year=${year}`,{headers:{accept:'application/json'}});if(!res.ok)throw Error('API 응답 오류');const data=await res.json();if(!Array.isArray(data.holidays))throw Error('공휴일 응답 오류');const mapped=new Map();for(const item of data.holidays){if(!/^\d{4}-\d{2}-\d{2}$/.test(item.date)||typeof item.name!=='string')continue;const names=mapped.get(item.date)||[];if(!names.includes(item.name))names.push(item.name);mapped.set(item.date,names)}holidayYears.set(year,mapped)})();
+ const task=(async()=>{const res=await fetch(`/api/holidays?year=${year}`,{headers:{accept:'application/json'}});if(!res.ok)throw Error('API 응답 오류');const data=await res.json();if(!Array.isArray(data.holidays))throw Error('공휴일 응답 오류');const mapped=new Map();for(const item of data.holidays){if(!/^\d{4}-\d{2}-\d{2}$/.test(item.date)||typeof item.name!=='string')continue;const names=mapped.get(item.date)||[];if(!names.includes(item.name))names.push(item.name);mapped.set(item.date,names)}holidayYears.set(year,mapped)})().catch(err=>{holidayFailed.add(year);throw err});
  holidayPending.set(year,task);try{await task}finally{holidayPending.delete(year)}
 }
 let holidayGeneration=0;
 async function syncHolidays(start,end){
- const generation=++holidayGeneration;if(!holidayEnabled){$('holidayStatus').textContent='공휴일 표시 꺼짐';return}
+ const generation=++holidayGeneration;
  const from=solarDate(start).getUTCFullYear(),to=solarDate(end).getUTCFullYear();const years=Array.from({length:to-from+1},(_,i)=>from+i);
  if(years.every(y=>holidayYears.has(y))){$('holidayStatus').textContent='공휴일 정보 표시 중';return}
+ if(years.some(y=>holidayFailed.has(y))){$('holidayStatus').textContent='공휴일 API 연결 실패 · 설정 후 페이지를 새로고침하세요.';return}
  $('holidayStatus').textContent='공휴일 불러오는 중…';const results=await Promise.allSettled(years.map(loadHolidayYear));if(generation!==holidayGeneration)return;
- $('holidayStatus').textContent=results.some(r=>r.status==='rejected')?'공휴일 정보를 불러오지 못했습니다. 다시 조회하면 재시도합니다.':'공휴일 정보 표시 중';render();
+ const failed=results.some(r=>r.status==='rejected');
+ $('holidayStatus').textContent=failed?'공휴일 API 연결 실패 · 설정 후 페이지를 새로고침하세요.':'공휴일 정보 표시 중';
+ if(!failed)render();
 }
-function holidayNames(i){if(!holidayEnabled)return [];const date=iso(i);return holidayYears.get(Number(date.slice(0,4)))?.get(date)||[]}
-$('showHolidays').onchange=e=>{holidayEnabled=e.target.checked;render()};
+function holidayNames(i){const date=iso(i);return holidayYears.get(Number(date.slice(0,4)))?.get(date)||[]}
 
 const solarDate=i=>new Date(BASE+i*DAY);const iso=i=>solarDate(i).toISOString().slice(0,10);
 const solarIndex=(y,m,d)=>{const ms=Date.UTC(y,m-1,d),v=new Date(ms);if(v.getUTCFullYear()!==y||v.getUTCMonth()+1!==m||v.getUTCDate()!==d)return -1;const i=(ms-BASE)/DAY;return Number.isInteger(i)&&i>=0&&i<COUNT?i:-1};

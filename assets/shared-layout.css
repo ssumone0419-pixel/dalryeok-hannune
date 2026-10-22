@@ -18,3 +18,24 @@ main .aside,main .side{padding:24px}
 .site-footer .footer-inner{max-width:var(--site-width)}
 @media(max-width:800px){main .layout{grid-template-columns:minmax(0,1fr)}}
 @media(max-width:600px){header .nav{padding:14px 16px;gap:12px}header .site-menu{width:100%}header .site-menu a{flex:1;padding:10px 8px}main{padding:28px 16px 55px}main .panel,main .aside,main .side{padding:17px}main .hero h1,main .intro h1{font-size:26px}}
+
+/* v6: one global visual system, applied after page-specific CSS. */
+:root{font-family:Pretendard,"Noto Sans KR",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:#17213a;background:#f6f8fc}
+*,*::before,*::after{box-sizing:border-box}
+html{font-family:inherit}body{margin:0;font-family:inherit;color:#17213a;background:#f6f8fc}
+header{background:#fff;border-bottom:1px solid #e7ebf3}
+header .nav{max-width:1080px;padding:18px 24px;min-height:78px;gap:16px}
+header .brand{font-family:inherit;font-size:20px;font-weight:850;letter-spacing:-.6px;line-height:1.3}
+header .brand i{font-style:normal;color:#5965db}
+header .site-menu{gap:10px}
+header .site-menu a{font-family:inherit;font-size:13px;font-weight:700;padding:10px 13px;min-height:38px;line-height:18px}
+main,main.holidays-page{display:block;width:100%;max-width:1080px;margin:0 auto;padding:38px 24px 70px}
+main .hero,main .intro,main.holidays-page .intro{margin:0 0 24px;text-align:left}
+main .hero h1,main .intro h1,main.holidays-page .intro h1{font-family:inherit;font-size:30px;line-height:1.3;letter-spacing:-1px;margin:0 0 10px;font-weight:850}
+main .hero p,main .intro p,main.holidays-page .intro p{font-family:inherit;font-size:15px;color:#67738b;line-height:1.7;margin:0}
+main .panel,main.holidays-page .panel{background:#fff;border:1px solid #e5e9f1;border-radius:20px;box-shadow:0 8px 25px #1a31500a;padding:24px}
+main.holidays-page>.panel{margin-bottom:20px}
+main.holidays-page>.notice{margin:0 0 20px}
+main.holidays-page .holiday-ad{margin:0 0 20px;min-height:105px}
+.site-footer{font-family:inherit}
+@media(max-width:600px){header .nav{padding:14px 16px;gap:12px}header .site-menu{width:100%}header .site-menu a{flex:1;padding:10px 8px}main,main.holidays-page{padding:28px 16px 55px}main .panel,main.holidays-page .panel{padding:17px}main .hero h1,main .intro h1,main.holidays-page .intro h1{font-size:26px}}

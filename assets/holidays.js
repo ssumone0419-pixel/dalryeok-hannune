@@ -46,19 +46,30 @@ function render(year){
    candidates.push({...segment,leave})
   }
  }
- // Avoid duplicates and redundant leave suggestions for the same range.
- const unique=new Map();
- for(const c of candidates){const k=`${fmt(c.start)}|${fmt(c.end)}`;if(!unique.has(k))unique.set(k,c)}
- const all=[...base.map(s=>({...s,type:'기본 연휴'})),...[...unique.values()].map(s=>({...s,type:'연차 1일 활용'}))];
- all.sort((a,b)=>b.days-a.days||a.start-b.start);
+ // Merge overlapping holiday recommendations into one representative card.
+ // Prefer the longest break; on ties prefer a break without taking leave.
+ const all=[...base.map(s=>({...s,type:'기본 연휴'})),...candidates.map(s=>({...s,type:'연차 1일 활용'}))];
+ all.sort((a,b)=>a.start-b.start||a.end-b.end);
+ const groups=[];
+ for(const item of all){
+  const last=groups[groups.length-1];
+  if(last && item.start<=last.end){
+   last.items.push(item);
+   if(item.end>last.end)last.end=item.end;
+  }else groups.push({end:item.end,items:[item]});
+ }
+ const chosen=groups.map(g=>{
+  const ranked=g.items.slice().sort((a,b)=>b.days-a.days||Number(!!a.leave)-Number(!!b.leave)||a.start-b.start);
+  return ranked[0];
+ }).sort((a,b)=>a.start-b.start);
  const golden=$('golden');golden.replaceChildren();
- if(!all.length)golden.append(text('p','표시할 3일 이상 연휴가 없습니다.','empty'));
- for(const s of all.slice(0,18)){
+ if(!chosen.length)golden.append(text('p','표시할 3일 이상 연휴가 없습니다.','empty'));
+ for(const s of chosen){
   const card=text('article','','gold-card');
   card.append(text('div',s.type,'type'),text('h3',`${s.days}일 연휴`),text('div',`${label(s.start)} (${dayLabel(s.start)}) ~ ${label(s.end)} (${dayLabel(s.end)})`,'range'));
   const names=[...holidayMap.entries()].filter(([iso])=>iso>=fmt(s.start)&&iso<=fmt(s.end)).flatMap(([,n])=>n);
   if(names.length)card.append(text('p',[...new Set(names)].join(' · ')));
-  if(s.leave)card.append(text('p',`연차 추천: ${label(date(Number(s.leave.slice(0,4)),Number(s.leave.slice(5,7)),Number(s.leave.slice(8,10))))}`,'leave'));
+  if(s.leave){const ld=date(Number(s.leave.slice(0,4)),Number(s.leave.slice(5,7)),Number(s.leave.slice(8,10)));card.append(text('p',`연차 사용일: ${ld.getUTCFullYear()}년 ${label(ld)} (${dayLabel(ld)}) · 연차 1일`,'leave'));}
   golden.append(card)
  }
 }

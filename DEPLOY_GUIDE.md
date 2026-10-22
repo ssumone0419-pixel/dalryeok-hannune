@@ -12,3 +12,9 @@
 
 ## 공휴일·황금연휴 페이지
 `holidays.html`에서 조회 연도를 선택하면 공식 API에서 공휴일을 조회하고 연휴 및 연차 1일 추천 구간을 계산합니다. Cloudflare Pages Functions 설정 및 HOLIDAY_API_KEY Secret이 필요합니다. API 조회 실패 시 임의로 공휴일을 만들어 표시하지 않습니다.
+
+## v6 변경사항
+- 세 주요 페이지의 로고, 폰트, 헤더, 메뉴, 본문 최대 너비, 타이틀과 카드 간격을 하나의 shared-layout.css로 통일했습니다.
+- 양력/음력 선택기의 연도·월·일 옵션에 각각 년/월/일을 표시합니다.
+- 공휴일 탭의 광고 영역 1개는 유지됩니다.
+- 공휴일 API 키는 GitHub에 넣지 말고 Cloudflare Pages의 Production Secret `HOLIDAY_API_KEY`로 등록하고 새 배포를 진행하세요.
