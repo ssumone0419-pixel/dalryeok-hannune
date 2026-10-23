@@ -1,0 +1,68 @@
+/* v22: mobile-first polish; deliberately scoped to small viewports. */
+@media (max-width: 600px) {
+  html { -webkit-text-size-adjust:100%; }
+  body { overflow-x:clip; }
+  header .nav { padding:12px 14px 14px; gap:12px; }
+  header .brand { font-size:20px; }
+  header .site-menu { display:grid; grid-template-columns:repeat(6,minmax(0,1fr)); gap:7px; width:100%; }
+  header .site-menu a { grid-column:span 2; display:flex; align-items:center; justify-content:center; min-width:0; min-height:46px; padding:8px 5px; font-size:12px; line-height:1.35; overflow-wrap:keep-all; text-align:center; }
+  header .site-menu a:nth-child(4),header .site-menu a:nth-child(5) { grid-column:span 3; }
+  main, main.holidays-page, main.age-page { padding:22px 12px 46px; }
+  main .hero,main .intro,main.holidays-page .intro { margin-bottom:18px; }
+  main .hero h1,main .intro h1,main.holidays-page .intro h1 { font-size:clamp(23px,6vw,28px); line-height:1.35; overflow-wrap:keep-all; }
+  main .hero p,main .intro p,main.holidays-page .intro p { font-size:14px; line-height:1.65; }
+  main .layout { gap:14px; }
+  main .panel,main.holidays-page .panel,main .aside,main .side { padding:16px; border-radius:15px; }
+  main h2 { line-height:1.4; overflow-wrap:keep-all; }
+  button,select,input { font-size:16px; }
+  button,a { -webkit-tap-highlight-color:transparent; }
+  button,.primary,.dday-primary,.age-button { min-height:44px; }
+  input,select,textarea { min-height:44px; }
+  .tabs button,.dday-tabs button { min-height:46px; }
+  .dday-tabs { gap:7px; }
+  .dday-tabs button { padding:11px 7px; font-size:14px; }
+  .dday-fields { grid-template-columns:minmax(0,1fr); }
+  .dday-fields input { font-size:16px; min-height:48px; }
+  .dday-result { padding:16px; }
+  .dday-result strong { font-size:clamp(26px,8vw,34px); overflow-wrap:anywhere; }
+  .dday-event-grid { grid-template-columns:minmax(0,1fr); }
+  .dday-events-heading { align-items:flex-start; }
+  .dday-events-heading .calendar-jump { display:inline-flex; align-items:center; min-height:44px; }
+  .dday-page>.dday-aside { margin:0 0 16px; }
+  .holiday-head select { min-height:46px; font-size:16px; }
+  .month-heading { flex-wrap:wrap; align-items:center; }
+  .month-heading .month-calendar-link { min-height:40px; display:inline-flex; align-items:center; justify-content:center; font-size:12px; padding:8px 10px; text-decoration:none; }
+  .gold-grid,.month-grid { grid-template-columns:minmax(0,1fr); }
+  .gold-card,.month-card { padding:15px; }
+  .gold-card .range { line-height:1.55; }
+  .age-fields { gap:9px; }
+  .age-results { gap:9px; }
+  .age-results>div { min-width:0; padding:12px; }
+  .age-results strong { font-size:clamp(19px,5vw,28px); overflow-wrap:anywhere; }
+  .grade-grid { gap:10px; }
+  .school-table-wrap { -webkit-overflow-scrolling:touch; }
+  .weekdays,.days { gap:2px; }
+  .day,.empty { min-height:76px; }
+  .day { padding:6px 3px; }
+  .day.selected { padding:5px 2px; }
+  .day .main-date { font-size:clamp(14px,4.2vw,18px)!important; }
+  .day .sub-date { font-size:10px; }
+  .day .event-tag,.holiday-tag { font-size:9px; }
+  .all-event { align-items:flex-start; }
+  .all-event-actions { flex-wrap:wrap; }
+  .all-event-actions a,.all-event-actions button { min-height:40px; display:inline-flex; align-items:center; }
+  .seo-related nav { gap:8px; }
+  .seo-related nav a { min-height:42px; display:inline-flex; align-items:center; }
+  .footer-inner { padding:20px 14px; }
+}
+@media (max-width: 360px) {
+  header .site-menu { gap:5px; }
+  header .site-menu a { font-size:11px; padding:7px 3px; }
+  main,main.holidays-page,main.age-page { padding-left:9px; padding-right:9px; }
+  main .panel,main.holidays-page .panel,main .aside,main .side { padding:12px; }
+  .day,.empty { min-height:72px; }
+  .day .sub-date,.day .event-tag,.holiday-tag { font-size:9px; }
+}
+@media (prefers-reduced-motion:reduce) {
+  html { scroll-behavior:auto; }
+}

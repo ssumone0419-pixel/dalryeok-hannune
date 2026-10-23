@@ -9,3 +9,8 @@
 .conversion-links{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-top:17px}
 .conversion-links .copy{margin-top:0;text-align:center;white-space:nowrap}
 @media(max-width:420px){.conversion-links{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.conversion-links .copy{padding:11px 6px;font-size:13px}}
+
+/* Converter result links: consistent appearance for calendar and D-day. */
+.conversion-links a.copy, .conversion-links a.copy:link, .conversion-links a.copy:visited, .conversion-links a.copy:hover, .conversion-links a.copy:focus { text-decoration: none; }
+.conversion-links a.copy:focus-visible { outline: 3px solid #4356c8; outline-offset: 3px; }
+.conversion-links a.copy[aria-disabled="true"] { opacity: .48; cursor: not-allowed; pointer-events: none; }
