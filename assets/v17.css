@@ -1,0 +1,6 @@
+/* v17: one calendar link per holiday month and mobile D-day content order */
+.month-heading{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:6px 10px;margin-bottom:10px}
+.month-heading h3{margin:0}
+.month-heading .month-calendar-link{margin:0;font-size:.78rem;padding:7px 10px}
+.holiday-item .holiday-countdown{display:inline-block;margin:5px 0 0}
+@media(max-width:600px){.dday-page>.dday-aside{margin:0 0 22px}.month-heading{flex-wrap:nowrap}.month-heading h3{flex-shrink:0}}

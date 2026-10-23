@@ -20,7 +20,7 @@ button,select{touch-action:manipulation}
  main .hero p,main .intro p,main.holidays-page .intro p{font-size:13px}
  main .panel,main.holidays-page .panel,main .aside,main .side{padding:16px;border-radius:15px}
  main .layout{gap:14px}
- .demo-ad,main.holidays-page .holiday-ad{margin:16px 0;min-height:76px;padding:12px}
+ 
  .footer-inner{padding:20px 14px;gap:12px;line-height:1.7}
  .footer-inner nav{display:flex;flex-wrap:wrap;gap:9px 14px}
  /* Converter */

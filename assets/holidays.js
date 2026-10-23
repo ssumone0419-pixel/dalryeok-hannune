@@ -36,9 +36,19 @@ function render(year){
  for(const [iso,names] of holidays){const m=Number(iso.slice(5,7));byMonth[m-1].push({iso,names})}
  const list=$('holidayList');list.replaceChildren();
  for(let m=1;m<=12;m++){
-  const box=text('div','','month-card');box.append(text('h3',`${m}월 · ${byMonth[m-1].length}일`));
+  const box=text('div','','month-card');
+  const monthHead=text('div','','month-heading');
+  monthHead.append(text('h3',`${m}월 · ${byMonth[m-1].length}일`));
+  if(byMonth[m-1].length){
+   const firstDate=byMonth[m-1][0].iso;
+   const go=text('a','달력에서 보기 →','calendar-jump month-calendar-link');
+   go.href=`calendar.html?date=${firstDate}`;
+   go.setAttribute('aria-label',`${year}년 ${m}월 달력에서 보기`);
+   monthHead.append(go);
+  }
+  box.append(monthHead);
   if(!byMonth[m-1].length)box.append(text('div','등록된 공휴일 없음','empty'));
-  for(const h of byMonth[m-1]){const d=date(Number(h.iso.slice(0,4)),m,Number(h.iso.slice(8,10)));const item=text('div','','holiday-item');const t=text('time',`${m}월 ${d.getUTCDate()}일 (${dayLabel(d)})`);t.dateTime=h.iso;item.append(t,text('span',h.names.join(' · ')));const go=text('a','달력 보기 →','calendar-jump');go.href=`calendar.html?date=${h.iso}`;item.append(text('span',countdown(d),'holiday-countdown'),go);box.append(item)}
+  for(const h of byMonth[m-1]){const d=date(Number(h.iso.slice(0,4)),m,Number(h.iso.slice(8,10)));const item=text('div','','holiday-item');const t=text('time',`${m}월 ${d.getUTCDate()}일 (${dayLabel(d)})`);t.dateTime=h.iso;item.append(t,text('span',h.names.join(' · ')));item.append(text('span',countdown(d),'holiday-countdown'));box.append(item)}
   list.append(box)
  }
  const base=streaks(start,end,null).filter(x=>x.days>=3);

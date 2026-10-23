@@ -18,4 +18,18 @@ sorted.sort((a,b)=>a.next-b.next);for(const {e,next,kind} of sorted)eventCard(e,
 if(!entries.length)$('eventNotice').textContent='저장된 기념일이 없습니다. 달력 탭에서 기념일을 등록하면 이곳에 자동 표시됩니다.';
 else if(!sorted.length&&!$('eventNotice').textContent)$('eventNotice').textContent='표시할 예정 기념일이 없습니다. 지난 일회성 기념일 또는 지원 범위 밖의 날짜는 목록에서 제외됩니다.';
 else if(sorted.length)$('eventNotice').textContent=`예정 기념일 ${sorted.length}개 · 달력과 같은 브라우저 저장소 사용`;
+// On narrow screens, show saved anniversaries before the general date tips.
+const aside=document.querySelector('.dday-aside');
+const layout=document.querySelector('.dday-page .layout');
+const events=document.querySelector('.dday-events');
+if(aside&&layout&&events&&window.matchMedia){
+ const mobile=window.matchMedia('(max-width: 600px)');
+ const positionTips=()=>{
+  if(mobile.matches){events.insertAdjacentElement('afterend',aside)}
+  else{layout.append(aside)}
+ };
+ positionTips();
+ if(mobile.addEventListener)mobile.addEventListener('change',positionTips);
+ else if(mobile.addListener)mobile.addListener(positionTips);
+}
 calculate();})();
