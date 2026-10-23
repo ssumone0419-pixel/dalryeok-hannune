@@ -1,0 +1,5 @@
+/* v16: date input format and holiday countdown */
+.dday-fields input[type="text"]{width:100%;min-width:0;font:inherit;letter-spacing:.025em}
+.holiday-countdown{font-weight:700;color:#174ea6;font-size:.93rem;white-space:normal}
+.holiday-item .holiday-countdown{margin-left:auto}
+.gold-card .holiday-countdown{margin:.4rem 0}

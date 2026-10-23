@@ -78,7 +78,10 @@ for(let i=start;i<=end;i++){const l=lunarByDay[i],s=solarDate(i),dow=s.getUTCDay
 $('prev').disabled=mode==='solar'?(solarYear===1900&&solarMonth===1):lunarPos===0;$('next').disabled=mode==='solar'?(solarYear===2050&&solarMonth===12):lunarPos===orderedMonths.length-1;
 $('calendarNote').textContent=mode==='solar'?'큰 숫자는 양력 날짜, 아래 작은 숫자는 음력 월·일입니다.':'큰 숫자는 음력 날짜, 아래 작은 숫자는 양력 월·일입니다. 일부 음력 월은 지원 범위 경계에서 잘릴 수 있습니다.';
 const l=lunarByDay[selected];$('selectedDate').textContent=iso(selected);$('selectedLunar').textContent=`음력 ${l.y}년 ${l.leap?'윤':''}${l.m}월 ${l.d}일`;
-$('events').replaceChildren();for(const e of (visibleEvents.get(selected)||[])){const li=document.createElement('li'),name=document.createElement('span'),del=document.createElement('button');name.className='name';name.textContent=e.name+' · '+({none:'1회',solar:'매년 양력',lunar:'매년 음력'}[e.repeat]);del.type='button';del.textContent='삭제';del.onclick=()=>{if(confirm('이 기념일을 삭제하시겠습니까?')){const previous=events;events=events.filter(v=>v.id!==e.id);if(!persist()){events=previous;return}render();setStatus('기념일을 삭제했습니다.')}};li.append(name,del);$('events').append(li)}renderAllEvents()}
+const selectedIso=iso(selected),selectedDelta=todayIdx>=0?selected-todayIdx:null;
+$('selectedDdayCount').textContent=selectedDelta===null?'지원 날짜 범위 밖입니다.':selectedDelta===0?'오늘 · D-DAY':selectedDelta>0?`오늘부터 ${selectedDelta}일 남음 · D-${selectedDelta}`:`오늘로부터 ${-selectedDelta}일 지남 · D+${-selectedDelta}`;
+$('selectedDdayLink').href=`dday.html?date=${selectedIso}`;
+$('events').replaceChildren();for(const e of (visibleEvents.get(selected)||[])){const li=document.createElement('li'),name=document.createElement('span'),del=document.createElement('button');name.className='name';name.textContent=e.name+' · '+({none:'1회',solar:'매년 양력',lunar:'매년 음력'}[e.repeat]);del.type='button';del.textContent='삭제';del.onclick=()=>{if(confirm('이 기념일을 삭제하시겠습니까?')){const previous=events;events=events.filter(v=>v.id!==e.id);if(!persist()){events=previous;return}render();setStatus('기념일을 삭제했습니다.')}};const dday=document.createElement('a');dday.className='calendar-jump event-dday-link';dday.href=`dday.html?date=${iso(selected)}`;dday.textContent='디데이 보기 →';li.append(name,dday,del);$('events').append(li)}renderAllEvents()}
 function renderAllEvents(){
  const list=$('allEventsList');list.replaceChildren();$('allEventsCount').textContent=`(${events.length})`;$('allEventsEmpty').hidden=events.length!==0;
  for(const e of [...events].sort((a,b)=>a.date.localeCompare(b.date)||a.name.localeCompare(b.name))){
@@ -98,6 +101,8 @@ function renderAllEvents(){
   actions.append(go,del);li.append(info,actions);list.append(li);
  }
 }
+// Allow holiday cards and D-day entries to open a specific date directly.
+try {const target=new URLSearchParams(location.search).get('date');if(target&&/^\d{4}-\d{2}-\d{2}$/.test(target)){const idx=solarIndex(...target.split('-').map(Number));if(idx>=0){selected=idx;mode='solar';solarYear=Number(target.slice(0,4));solarMonth=Number(target.slice(5,7));lunarPos=orderedMonths.findIndex(m=>idx>=m.start&&idx<m.start+m.length);}}}catch(e){}
 $('prev').onclick=()=>move(-1);$('next').onclick=()=>move(1);
 function move(step){if(mode==='solar'){let x=solarYear*12+solarMonth-1+step;x=Math.max(1900*12,Math.min(2050*12+11,x));solarYear=Math.floor(x/12);solarMonth=x%12+1}else lunarPos=Math.max(0,Math.min(orderedMonths.length-1,lunarPos+step));const r=getRange();selected=Math.max(r.start,Math.min(selected,r.end));render()}
 $('view').onchange=()=>{mode=$('view').value;const s=solarDate(selected),l=lunarByDay[selected];solarYear=s.getUTCFullYear();solarMonth=s.getUTCMonth()+1;lunarPos=orderedMonths.findIndex(m=>selected>=m.start&&selected<m.start+m.length);render()};

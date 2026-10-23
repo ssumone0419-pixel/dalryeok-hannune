@@ -10,6 +10,9 @@ const date=(y,m,d)=>new Date(Date.UTC(y,m-1,d));
 const label=d=>`${d.getUTCMonth()+1}월 ${d.getUTCDate()}일`;
 const dayLabel=d=>['일','월','화','수','목','금','토'][d.getUTCDay()];
 const dayMs=86400000;
+const todayLocal=new Date();
+const todayUTC=date(todayLocal.getFullYear(),todayLocal.getMonth()+1,todayLocal.getDate());
+const countdown=d=>{const n=Math.round((d-todayUTC)/dayMs);return n===0?'D-DAY':n>0?`D-${n}`:`D+${-n}`};
 const dayAdd=(d,n)=>new Date(d.getTime()+n*dayMs);
 const holidayMap=new Map();
 let leaveMode=false;
@@ -35,7 +38,7 @@ function render(year){
  for(let m=1;m<=12;m++){
   const box=text('div','','month-card');box.append(text('h3',`${m}월 · ${byMonth[m-1].length}일`));
   if(!byMonth[m-1].length)box.append(text('div','등록된 공휴일 없음','empty'));
-  for(const h of byMonth[m-1]){const d=date(Number(h.iso.slice(0,4)),m,Number(h.iso.slice(8,10)));const item=text('div','','holiday-item');const t=text('time',`${m}월 ${d.getUTCDate()}일 (${dayLabel(d)})`);t.dateTime=h.iso;item.append(t,text('span',h.names.join(' · ')));box.append(item)}
+  for(const h of byMonth[m-1]){const d=date(Number(h.iso.slice(0,4)),m,Number(h.iso.slice(8,10)));const item=text('div','','holiday-item');const t=text('time',`${m}월 ${d.getUTCDate()}일 (${dayLabel(d)})`);t.dateTime=h.iso;item.append(t,text('span',h.names.join(' · ')));const go=text('a','달력 보기 →','calendar-jump');go.href=`calendar.html?date=${h.iso}`;item.append(text('span',countdown(d),'holiday-countdown'),go);box.append(item)}
   list.append(box)
  }
  const base=streaks(start,end,null).filter(x=>x.days>=3);
@@ -65,10 +68,11 @@ function render(year){
  if(!chosen.length)golden.append(text('p',leaveMode?'연차 1일로 4일 이상 쉬는 추천 구간이 없습니다.':'연차 없이 3일 이상 이어지는 연휴가 없습니다.','empty'));
  for(const s of chosen){
   const card=text('article','','gold-card');
-  card.append(text('div',s.type,'type'),text('h3',`${s.days}일 연휴`),text('div',`${label(s.start)} (${dayLabel(s.start)}) ~ ${label(s.end)} (${dayLabel(s.end)})`,'range'));
+  card.append(text('div',s.type,'type'),text('h3',`${s.days}일 연휴`),text('div',`${label(s.start)} (${dayLabel(s.start)}) ~ ${label(s.end)} (${dayLabel(s.end)})`,'range'),text('p',`연휴 시작까지 ${countdown(s.start)} · 종료일 ${countdown(s.end)}`,'holiday-countdown')); 
   const names=[...holidayMap.entries()].filter(([iso])=>iso>=fmt(s.start)&&iso<=fmt(s.end)).flatMap(([,n])=>n);
   if(names.length)card.append(text('p',[...new Set(names)].join(' · ')));
   if(s.leave){const ld=date(Number(s.leave.slice(0,4)),Number(s.leave.slice(5,7)),Number(s.leave.slice(8,10)));card.append(text('p',`연차 사용일: ${ld.getUTCFullYear()}년 ${label(ld)} (${dayLabel(ld)}) · 연차 1일`,'leave'));}
+  const go=text('a','달력에서 보기 →','calendar-jump');go.href=`calendar.html?date=${fmt(s.start)}`;go.setAttribute('aria-label',`${fmt(s.start)} 연휴 시작일 달력에서 보기`);card.append(go);
   golden.append(card)
  }
 }
