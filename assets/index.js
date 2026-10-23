@@ -10,7 +10,12 @@ function lunarKey(y,m,d,l){return `${y}-${m}-${d}-${l?1:0}`}
 function monthKey(y,m,l){return `${y}-${m}-${l?1:0}`}
 function dateOf(i){return new Date(BASE+i*DAY).toISOString().slice(0,10)}
 for(let i=0;i<COUNT;i++){const l=decode(i),key=lunarKey(l.year,l.month,l.day,l.leap),mk=monthKey(l.year,l.month,l.leap);if(byLunar.has(key))throw Error('음력 데이터에 중복이 있습니다.');byLunar.set(key,i);monthDays.set(mk,Math.max(monthDays.get(mk)||0,l.day));if(l.leap)leapMonths.add(`${l.year}-${l.month}`)}
-let mode='solar',last='';
+let mode='solar';
+const calendarLink=$('calendarLink'),ddayLink=$('ddayLink');
+function setCalendarTarget(iso){
+ if(iso){calendarLink.href=`calendar.html?date=${encodeURIComponent(iso)}`;calendarLink.removeAttribute('aria-disabled');calendarLink.removeAttribute('tabindex');ddayLink.href=`dday.html?date=${encodeURIComponent(iso)}`;ddayLink.removeAttribute('aria-disabled');ddayLink.removeAttribute('tabindex')}
+ else{calendarLink.href='calendar.html';calendarLink.setAttribute('aria-disabled','true');calendarLink.setAttribute('tabindex','-1');ddayLink.href='dday.html';ddayLink.setAttribute('aria-disabled','true');ddayLink.setAttribute('tabindex','-1')}
+}
 const solarStr=(y,m,d)=>`${y}년 ${m}월 ${d}일`;
 function fill(el,start,end,selected){el.innerHTML='';for(let i=start;i<=end;i++){const opt=document.createElement('option');opt.value=i;opt.textContent=`${i}${el.id==='year'?'년':el.id==='month'?'월':'일'}`;el.appendChild(opt)}el.value=String(Math.min(end,Math.max(start,selected)))}
 function solarIndex(y,m,d){const t=Date.UTC(y,m-1,d),check=new Date(t);if(check.getUTCFullYear()!==y||check.getUTCMonth()+1!==m||check.getUTCDate()!==d)return -1;const i=(t-BASE)/DAY;return Number.isInteger(i)&&i>=0&&i<COUNT?i:-1}
@@ -55,26 +60,27 @@ function switchMode(next){
  refreshDays();$('day').value=String(d);convert();
 }
 function convert(){
+ setCalendarTarget(null);
  const y=+$('year').value,d=+$('day').value;
  const {month:m,leap}=mode==='lunar'?selectedLunarMonth():{month:+$('month').value,leap:false};
  $('error').textContent='';
  try{
   if(mode==='solar'){
    const i=solarIndex(y,m,d);if(i<0)throw Error('양력 1900-01-01부터 2050-12-31까지만 지원합니다.');
-   const l=decode(i);last=`양력 ${solarStr(y,m,d)} → 음력 ${l.year}년 ${l.leap?'윤':''}${l.month}월 ${l.day}일`;
+   const l=decode(i);setCalendarTarget(dateOf(i));
    $('resultDate').textContent=`${l.year}년 ${l.leap?'윤':''}${l.month}월 ${l.day}일`;
    $('resultSub').textContent=`${l.leap?'윤달':'평달'} · 양력 ${y}.${pad(m)}.${pad(d)}`;
   }else{
    const i=byLunar.get(lunarKey(y,m,d,leap));
    if(i===undefined)throw Error('해당 음력 날짜는 지원 범위에 없거나 존재하지 않습니다.');
    const [sy,sm,sd]=dateOf(i).split('-').map(Number);
-   last=`음력 ${y}년 ${leap?'윤':''}${m}월 ${d}일 → 양력 ${solarStr(sy,sm,sd)}`;
+   setCalendarTarget(dateOf(i));
    $('resultDate').textContent=solarStr(sy,sm,sd);
    $('resultSub').textContent=`음력 ${y}년 ${leap?'윤':''}${m}월 ${d}일`;
   }
- }catch(e){$('error').textContent=e.message;$('resultDate').textContent='변환할 수 없습니다';$('resultSub').textContent='날짜를 다시 확인해 주세요.';last=''}
+ }catch(e){$('error').textContent=e.message;$('resultDate').textContent='변환할 수 없습니다';$('resultSub').textContent='날짜를 다시 확인해 주세요.';setCalendarTarget(null)}
 }
 $('solarTab').onclick=()=>switchMode('solar');$('lunarTab').onclick=()=>switchMode('lunar');
 $('convert').onclick=convert;$('year').onchange=onYearChange;$('month').onchange=refreshDays;
-$('copy').onclick=async()=>{if(!last)return;try{await navigator.clipboard.writeText(last);$('copy').textContent='복사 완료 ✓';setTimeout(()=>$('copy').textContent='결과 복사하기',1500)}catch(e){$('error').textContent='브라우저에서 복사를 허용하지 않았습니다.'}};
+for(const link of [calendarLink,ddayLink])link.addEventListener('click',e=>{if(link.getAttribute('aria-disabled')==='true')e.preventDefault()});
 switchMode('solar');})();
