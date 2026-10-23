@@ -57,7 +57,32 @@ function setMode(m){mode=m;for(const [id,val] of [['modeDday','dday'],['modeDiff
 function updateBusinessType(){businessType=$('businessType').value;const add=mode==='business'&&businessType==='add';$('businessCountWrap').hidden=!add;$('targetLabel').hidden=add;$('calculate').textContent=add?'영업일 후 날짜 계산하기 →':'날짜 계산하기 →'}
 $('modeDday').onclick=()=>setMode('dday');$('modeDiff').onclick=()=>setMode('business');$('calculate').onclick=calculate;
 $('businessType').addEventListener('change',()=>{updateBusinessType();calculate()});$('businessCount').addEventListener('change',calculate);
-for(const id of ['startDate','targetDate']){$(id).addEventListener('change',()=>{const d=parse($(id).value);if(d)$(id).value=iso(d).replaceAll('-','/');calculate()});$(id).addEventListener('input',()=>{$('ddayError').textContent=''})}
+// Numeric keyboards cannot type '/', so insert separators automatically as users type or paste.
+function formatDateDigits(value){
+ const digits=String(value).replace(/\D/g,'').slice(0,8);
+ if(digits.length<=4)return digits;
+ if(digits.length<=6)return `${digits.slice(0,4)}/${digits.slice(4)}`;
+ return `${digits.slice(0,4)}/${digits.slice(4,6)}/${digits.slice(6)}`;
+}
+for(const id of ['startDate','targetDate']){
+ const field=$(id);
+ field.addEventListener('input',()=>{
+  const caret=field.selectionStart??field.value.length;
+  const digitsBefore=field.value.slice(0,caret).replace(/\D/g,'').length;
+  const formatted=formatDateDigits(field.value);
+  field.value=formatted;
+  let newCaret=0,seen=0;
+  while(newCaret<formatted.length&&seen<digitsBefore){if(/\d/.test(formatted[newCaret]))seen++;newCaret++}
+  if(digitsBefore===0)newCaret=0;
+  try{field.setSelectionRange(newCaret,newCaret)}catch(e){}
+  $('ddayError').textContent='';
+ });
+ field.addEventListener('change',()=>{
+  const d=parse(field.value);
+  if(d)field.value=iso(d).replaceAll('-','/');
+  calculate();
+ });
+}
 const grid=$('ddayEvents');function eventCard(e,target,kind){const d=Math.round((target-parse(todayIso))/DAY),box=document.createElement('article');box.className='dday-event';const h=document.createElement('h3');h.textContent=e.name;const count=document.createElement('strong');count.textContent=fmtDays(d);const p=document.createElement('p');p.textContent=`${iso(target)} · ${kind}`;const a=document.createElement('a');a.className='calendar-jump';a.href=`calendar.html?date=${iso(target)}`;a.textContent='달력에서 보기 →';box.append(h,count,p,a);grid.append(box)}
 let entries=[];try{const raw=JSON.parse(localStorage.getItem(KEY)||'[]');if(!Array.isArray(raw))throw Error();entries=raw.filter(e=>e&&typeof e.name==='string'&&typeof e.date==='string'&&['none','solar','lunar'].includes(e.repeat))}catch(e){$('eventNotice').textContent='저장된 기념일을 읽지 못했습니다. 브라우저 저장 설정을 확인하세요.'}
 const lunarNext=new Map();const lunarEvents=entries.filter(e=>e.repeat==='lunar'&&Number.isInteger(e.lm)&&Number.isInteger(e.ld)&&typeof e.leap==='boolean');
