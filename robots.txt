@@ -1,3 +1,4 @@
 User-agent: *
 Allow: /
-# 도메인이 확정되면 아래에 Sitemap: https://실제도메인/sitemap.xml 추가
+
+Sitemap: https://dalryeok-hannune.pages.dev/sitemap.xml

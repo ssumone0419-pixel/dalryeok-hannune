@@ -1,0 +1,4 @@
+/* SEO-related navigation: no external dependencies */
+.seo-related{max-width:1100px;margin:24px auto;padding:20px 22px;border:1px solid #e3e8f2;border-radius:14px;background:#fff;box-sizing:border-box}
+.seo-related h2{font-size:1.13rem;margin:0 0 9px}.seo-related p{margin:0 0 14px;color:#596579;font-size:.93rem}.seo-related nav{display:flex;flex-wrap:wrap;gap:9px}.seo-related a{display:inline-block;padding:9px 12px;border-radius:9px;background:#f1f5fb;color:#20539a;text-decoration:none;font-weight:600;font-size:.92rem}.seo-related a:hover,.seo-related a:focus-visible{text-decoration:underline;background:#e5edf9}
+@media(max-width:640px){.seo-related{margin:16px 12px;padding:16px}.seo-related nav{display:grid;grid-template-columns:1fr 1fr}.seo-related a{text-align:center;font-size:.85rem;padding:10px 6px}}

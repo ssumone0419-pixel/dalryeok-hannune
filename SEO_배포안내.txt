@@ -1,0 +1,10 @@
+달력한눈에 v13 SEO 업데이트
+
+변경: 8개 HTML 페이지별 title/description, canonical, og:url, 주요 4개 페이지 WebApplication JSON-LD, 관련 기능 내부 링크, assets/seo.css, robots.txt, sitemap.xml.
+변경하지 않음: 기존 JS, 공휴일 API Function, 광고 스크립트.
+
+중요: 이 ZIP은 제공된 v12 파일을 기반으로 합니다. 기존 GitHub에 따로 업로드한 google*.html 소유권 인증 파일은 ZIP에 없으므로 삭제하지 마세요. Cloudflare의 HOLIDAY_API_KEY 환경변수는 유지하세요.
+
+GitHub에 업로드할 때 기존 파일 전체를 삭제하고 교체하지 마세요. ZIP의 변경/추가 파일만 같은 위치에 업로드·커밋하세요. 기존 사이트맵은 이 ZIP의 sitemap.xml로 교체 가능합니다. 기존 인증 파일은 보존해야 합니다.
+
+SEO 변경은 색인이나 애드센스 승인, 검색 순위를 보장하지 않습니다. 배포 후 페이지/공휴일 API/모바일/사이트맵 동작을 실제 브라우저에서 확인하세요.

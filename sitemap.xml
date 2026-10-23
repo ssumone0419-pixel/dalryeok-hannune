@@ -1,21 +1,10 @@
-<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>https://dalryeok-hannune.pages.dev/</loc>
-  </url>
-  <url>
-    <loc>https://dalryeok-hannune.pages.dev/calendar.html</loc>
-  </url>
-  <url>
-    <loc>https://dalryeok-hannune.pages.dev/holidays.html</loc>
-  </url>
-  <url>
-    <loc>https://dalryeok-hannune.pages.dev/age.html</loc>
-  </url>
-  <url>
-    <loc>https://dalryeok-hannune.pages.dev/about.html</loc>
-  </url>
-  <url>
-    <loc>https://dalryeok-hannune.pages.dev/guide.html</loc>
-  </url>
+  <url><loc>https://dalryeok-hannune.pages.dev/</loc></url>
+  <url><loc>https://dalryeok-hannune.pages.dev/calendar.html</loc></url>
+  <url><loc>https://dalryeok-hannune.pages.dev/holidays.html</loc></url>
+  <url><loc>https://dalryeok-hannune.pages.dev/age.html</loc></url>
+  <url><loc>https://dalryeok-hannune.pages.dev/about.html</loc></url>
+  <url><loc>https://dalryeok-hannune.pages.dev/guide.html</loc></url>
+  <url><loc>https://dalryeok-hannune.pages.dev/privacy.html</loc></url>
+  <url><loc>https://dalryeok-hannune.pages.dev/contact.html</loc></url>
 </urlset>
